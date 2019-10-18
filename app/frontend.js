@@ -34,9 +34,12 @@ async function connect() {
   $(".tab").toggleClass("disabled", !session)
 
   if (session) {
+    $('#main').removeAttr("style");
+    $('#connect-modal').modal("close");
     $('.tabs').tabs('select', 'createuser');
-  } else {
-    $("#connect").removeClass("disabled")
+  }
+  else {
+
   }
 }
 

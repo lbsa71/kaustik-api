@@ -9,42 +9,52 @@
   <script type="text/javascript">
     $(document).ready(function() {
       $('.tabs').tabs();
+
+      $('.modal').modal();
+      $('#connect-modal').modal("open");
     });
   </script>
 </head>
 
 <body>
-  <div class="row">
-    <form class="col s12">
-      <div class="row">
-        <div class="col s12">
-          <ul class="tabs">
-            <li class="tab col s3"><a href="#connect">Connect</a></li>
-            <li class="tab col s3 disabled"><a href="#createuser">Create User</a></li>
-            <li class="tab col s3 disabled"><a href="#assignrole">Assign Role</a></li>
-            <li class="tab col s3 disabled"><a href="#getuser">Get User</a></li>
-          </ul>
-        </div>
+  <div id="connect-modal" class="modal">
+    <div class="modal-content">
+      <h4>Connect</h4>
+      <form class="col s12">
         <div id="connect" class="col s12">
           <div class="row">
             <div class="input-field s12">
-              <input id="url" type="url" class="validate" value="">
+              <input id="url" type="url" class="validate">
               <label for="url">Kaustik API host URL</label>
             </div>
           </div>
           <div class="row">
             <div class="input-field col s6">
-              <input id="login" type="text" class="validate" value="">
+              <input id="login" type="text" class="validate">
               <label for="login">API user login</label>
             </div>
             <div class="input-field col s6">
-              <input id="pwd" type="text" class="validate" value="">
+              <input id="pwd" type="text" class="validate">
               <label for="pwd">API user password</label>
             </div>
           </div>
-          <div class="row">
-            <a class="waves-effect waves-light btn" onclick="javascript:connect()" href="#">Connect</a>
-          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat" onclick="javascript:connect()" href="#">Connect</a>
+    </div>
+  </div>
+  <div id="main" class="row" style="display:none">
+    <form class="col s12">
+      <a class="waves-effect waves-light btn modal-trigger" href="#connect-modal">Reconnect</a>
+      <div class="row">
+        <div class="col s12">
+          <ul class="tabs">
+            <li class="tab col s3 disabled"><a href="#createuser">Create User</a></li>
+            <li class="tab col s3 disabled"><a href="#assignrole">Assign Role</a></li>
+            <li class="tab col s3 disabled"><a href="#getuser">Get User</a></li>
+          </ul>
         </div>
         <div id="createuser" class="col s12">
           <div class="row">
