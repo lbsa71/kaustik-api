@@ -1,0 +1,32 @@
+{
+  "name": "kaustik-api",
+  "version": "1.0.0",
+  "description": "A small node.js app to demo Kaustik API integration",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "axios-debug-log": "^0.6.2",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "materialize-css": "^1.0.0-rc.2",
+    "set-cookie-parser": "^2.3.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lbsa71/kaustik-api.git"
+  },
+  "keywords": [
+    "kaustik",
+    "api",
+    "integration"
+  ],
+  "author": "Stefan Andersson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lbsa71/kaustik-api/issues"
+  },
+  "homepage": "https://github.com/lbsa71/kaustik-api#readme"
+}
