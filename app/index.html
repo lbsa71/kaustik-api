@@ -7,11 +7,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script type="text/javascript" src="frontend.js"></script>
   <script type="text/javascript">
-    $(document).ready(function(){
-        $('.tabs').tabs();
-      });
+    $(document).ready(function() {
+      $('.tabs').tabs();
+    });
   </script>
 </head>
+
 <body>
   <div class="row">
     <form class="col s12">
@@ -19,9 +20,9 @@
         <div class="col s12">
           <ul class="tabs">
             <li class="tab col s3"><a href="#connect">Connect</a></li>
-            <li class="tab col s3 disabled"><a href="#getuser">Get User</a></li>
             <li class="tab col s3 disabled"><a href="#createuser">Create User</a></li>
             <li class="tab col s3 disabled"><a href="#assignrole">Assign Role</a></li>
+            <li class="tab col s3 disabled"><a href="#getuser">Get User</a></li>
           </ul>
         </div>
         <div id="connect" class="col s12">
@@ -45,25 +46,51 @@
             <a class="waves-effect waves-light btn" onclick="javascript:connect()" href="#">Connect</a>
           </div>
         </div>
-        <div id="getuser" class="col s12">
+        <div id="createuser" class="col s12">
           <div class="row">
-            <div class="input-field s12">
-              <input id="user_id" type="number" class="validate">
-              <label for="user_id">User Id</label>
+            <div class="input-field col s6">
+              <input id="username" type="text" class="validate" value="">
+              <label for="username">Enter user login name</label>
+            </div>
+            <div class="input-field col s6">
+              <input id="email" type="email" class="validate" value="">
+              <label for="email">Enter user email</label>
             </div>
           </div>
           <div class="row">
-            <a class="waves-effect waves-light btn" onclick="javascript:getUser()" href="#">Get user</a>
+            <div class="input-field col s6">
+              <input id="firstname" type="text" class="validate" value="">
+              <label for="firstname">Enter user first name</label>
+            </div>
+            <div class="input-field col s6">
+              <input id="lastname" type="text" class="validate" value="">
+              <label for="lastname">Enter user last name</label>
+            </div>
+          </div>
+          <div class="row">
+            <a class="waves-effect waves-light btn" onclick="javascript:createUser()" href="#">Create user</a>
           </div>
         </div>
-        <div id="createuser" class="col s12">
-          Create User</div>
         <div id="assignrole" class="col s12">
           <div class="row">
             <div class="input-field s12">
               <input id="role_user_id" type="number" class="validate">
-              <label for="role_user_id">User Id</label>
+              <label for="role_user_id" class="active">User Id</label>
             </div>
+          </div>
+          <div class="row">
+            <a class="waves-effect waves-light btn" onclick="javascript:makeUserEmployee()" href="#">Make user Employee</a>
+          </div>
+        </div>
+        <div id="getuser" class="col s12">
+          <div class="row">
+            <div class="input-field s12">
+              <input id="user_id" type="number" class="validate">
+              <label for="user_id" class="active">User Id</label>
+            </div>
+          </div>
+          <div class="row">
+            <a class="waves-effect waves-light btn" onclick="javascript:getEmployee()" href="#">Get Employee</a>
           </div>
         </div>
       </div>

@@ -57,6 +57,43 @@ app.post('/get-employee', async (req, res) => {
     .end();
 });
 
+app.post('/create-user', async (req, res) => {
+  const host=req.body.host
+  const session=req.body.session
+  const username=req.body.username
+  const firstname=req.body.firstname
+  const lastname=req.body.lastname
+  const email=req.body.email
+
+  let err, response
+  [err, response] = await to(apiClient.create_user(host, session, username, firstname, lastname, email))
+
+  err = err ? err : response.errors
+  const user = err ? null : response
+
+  res
+    .status(200)
+    .send({ err, user })
+    .end();
+});
+
+app.post('/make-employee', async (req, res) => {
+  const host=req.body.host
+  const session=req.body.session
+  const id=req.body.user_id
+
+  let err, response
+  [err, response] = await to(apiClient.make_employee(host, session, id))
+
+  err = err ? err : response.errors
+  const user = err ? null : response
+
+  res
+    .status(200)
+    .send({ err, user })
+    .end();
+});
+
 // Start the server
 const PORT = process.env.PORT || 8080
 

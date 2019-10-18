@@ -67,8 +67,11 @@ module.exports = function() {
     return new Promise((resolve, reject) => {
       // http://aiai.local.kaustik.tech/api/user-accounts
 
-      axios.post(url('/api/user-accounts'), data, config)
+      axios.post(url(host, '/api/user-accounts'), data, config)
         .then(response => {
+
+          console.log("user: %o", response.data)
+
           resolve(response.data);
         })
         .catch(error => {
@@ -89,7 +92,7 @@ module.exports = function() {
     return new Promise((resolve, reject) => {
       // http://aiai.local.kaustik.tech/api/user-accounts
 
-      axios.post(url('/api/employees'), data, config)
+      axios.post(url(host, '/api/employees'), data, config)
         .then(response => {
           resolve(response.data);
         })
@@ -116,7 +119,7 @@ module.exports = function() {
         })
         .catch(error => {
 
-          const errors = error.response.data.errors || error.data
+          const errors = error.response.data.errors
 
           reject(errors)
         });
