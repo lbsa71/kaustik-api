@@ -72,7 +72,82 @@ async function getEmployee() {
     message = message || "No error, but no content either?"
   }
 
-  $("#messages").text(message)
+  $("#messages").show().text(message)
+}
+
+async function uploadDecision() {
+  var file = decisionfile.files[0]
+
+  var reader = new FileReader();
+
+  reader.onload = async function (evt) {
+
+    var table = ""
+    var messages = ""
+
+    var decision_csv = evt.target.result
+
+    decision_lines=decision_csv.replace(/\r\n|\n\r|\n|\r/g,"\n").split("\n");
+
+    for(var i=0;i<decision_lines.length;i++)
+    {
+      var decision_line=decision_lines[i]
+      var decision_columns=decision_line.split('\t')
+
+      if(decision_columns.length === 5)
+      {
+        var client_id=parseInt(decision_columns[0])
+        var cost_center=decision_columns[1]
+        var name=decision_columns[2]
+        var start_date=decision_columns[3]
+        var end_date=decision_columns[4]
+
+        decision = {
+          clientId:client_id,
+          costCenter:cost_center,
+          title:name,
+          decisionPeriod: {
+            start:start_date,
+            end:end_date
+          },
+          useFKTemplate: true
+        }
+
+        const data = JSON.stringify({
+          host: url.value,
+          session: session,
+          decision
+        })
+
+        let err, response
+
+        [err, response] = await post("create-decision", data)
+
+        var message = getError(err || response.err)
+
+        const response_decision = response.decision
+        if (response_decision) {
+          message = 'Uploaded decision "' + name + '"'
+        } else {
+          message = message || "No error for  decision " + (i+1) +", but no content either?"
+        }
+
+        messages += message + "</br>"
+
+        $("#messages").show().html(messages)
+
+        table += "<tr><td>"+name+"</td><td>"+start_date+"</td><td>"+end_date+"</td></tr>"
+      }
+
+      $("#decisionrows").html(table)
+    }
+  }
+
+  reader.onerror = function (evt) {
+      $("#messages").show().text("error reading file")
+  }
+
+  reader.readAsText(file, "UTF-8");
 }
 
 async function makeUserEmployee() {
@@ -98,7 +173,7 @@ async function makeUserEmployee() {
     message = message || "No error, but no content either?"
   }
 
-  $("#messages").text(message)
+  $("#messages").show().text(message)
 }
 
 async function createUser() {
@@ -130,5 +205,5 @@ async function createUser() {
     message = message || "No error, but no content either?"
   }
 
-  $("#messages").text(message)
+  $("#messages").show().text(message)
 }

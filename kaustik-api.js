@@ -80,6 +80,27 @@ module.exports = function() {
     })
   }
 
+  function create_decisions(host, session, decisions) {
+    var data = decisions
+
+    var config = getConfig(session)
+
+    return new Promise((resolve, reject) => {
+      // http://aiai.local.kaustik.tech/api/user-accounts
+
+      axios.post(url(host, '/api/decisions'), data, config)
+        .then(response => {
+
+          console.log("decisions: %o", response.data)
+
+          resolve(response.data);
+        })
+        .catch(error => {
+          reject(error.response.data.errors)
+        });
+    })
+  }
+
   function make_employee(host, session, id) {
     var data = {
       "id": Number(id)
@@ -130,6 +151,7 @@ module.exports = function() {
     login,
     create_user,
     make_employee,
+    create_decisions,
     get_employee
   }
 }

@@ -8,10 +8,11 @@
   <script type="text/javascript" src="frontend.js"></script>
   <script type="text/javascript">
     $(document).ready(function() {
-      $('.tabs').tabs();
+      $('.tabs').tabs()
 
-      $('.modal').modal();
-      $('#connect-modal').modal("open");
+      $('.modal').modal()
+      $('#connect-modal').modal("open")
+      $("#messages").hide()
     });
   </script>
 </head>
@@ -54,6 +55,7 @@
             <li class="tab col s3 disabled"><a href="#createuser">Create User</a></li>
             <li class="tab col s3 disabled"><a href="#assignrole">Assign Role</a></li>
             <li class="tab col s3 disabled"><a href="#getuser">Get User</a></li>
+            <li class="tab col s3 disabled"><a href="#importdecision">Import Decision</a></li>
           </ul>
         </div>
         <div id="createuser" class="col s12">
@@ -101,6 +103,40 @@
           </div>
           <div class="row">
             <a class="waves-effect waves-light btn" onclick="javascript:getEmployee()" href="#">Get Employee</a>
+          </div>
+        </div>
+        <div id="importdecision" class="col s12">
+          <div class="row">
+            <div class="input-field s12">
+              <div class="file-field input-field">
+                <div class="btn">
+                  <span>File</span>
+                  <input id="decisionfile" type="file" multiple>
+                </div>
+                <div class="file-path-wrapper">
+                  <input class="file-path validate" type="text" placeholder="Upload one or more files">
+                </div>
+              </div>
+              <a class="waves-effect waves-light btn col" onclick="javascript:uploadDecision()">Upload</a>
+            </div>
+          </div>
+          <div class="row">
+            <table>
+              <thead>
+                <tr>
+                    <th>Decision</th>
+                    <th>Start</th>
+                    <th>End</th>
+                </tr>
+              </thead>
+              <tbody id="decisionrows">
+                <tr>
+                  <td>&nbsp;</td>
+                  <td>Please choose a file to upload</td>
+                  <td>&nbsp;</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

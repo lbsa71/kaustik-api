@@ -94,6 +94,24 @@ app.post('/make-employee', async (req, res) => {
     .end();
 });
 
+
+app.post('/create-decision', async (req, res) => {
+  const host=req.body.host
+  const session=req.body.session
+  var decision=req.body.decision
+
+  let err, response
+  [err, response] = await to(apiClient.create_decisions(host, session, decision))
+
+  err = err ? err : response.errors
+  decision = err ? null : response
+
+  res
+    .status(200)
+    .send({ err, decision })
+    .end();
+});
+
 // Start the server
 const PORT = process.env.PORT || 8080
 
