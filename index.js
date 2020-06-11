@@ -22,14 +22,14 @@ function to(promise) {
 
 app.post('/connect', async (req, res) => {
   const host=req.body.host
-  const oauth_token_url=req.body.oauth_token_url
+
   const client_id=req.body.client_id
   const client_secret=req.body.client_secret
 
-  console.log("authentication: %o %o %o %o", host, oauth_token_url, client_id, client_secret);
+  console.log("authentication: %o %o %o", host, client_id, client_secret);
 
   let err, authentication
-  [err, authentication] = await to(apiClient.connect(host, oauth_token_url, client_id, client_secret))
+  [err, authentication] = await to(apiClient.connect(host, client_id, client_secret))
 
   console.log("authentication: %o", authentication);
 
@@ -71,6 +71,22 @@ app.post('/get-employee', async (req, res) => {
   res
     .status(200)
     .send({ err, employee })
+    .end();
+});
+
+app.post('/get-users', async (req, res) => {
+  const host=req.body.host
+  const authentication=req.body.authentication
+
+  let err, users
+  [err, users] = await to(apiClient.get_users(host, authentication))
+
+  console.log("err: %o", err);
+  console.log("employee: %o", users);
+
+  res
+    .status(200)
+    .send({ err, users })
     .end();
 });
 

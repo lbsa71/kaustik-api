@@ -19,7 +19,7 @@ function post(url, data) {
 }
 
 async function connect() {
-  const oauth_token_url = _oauth_token_url.value
+
   const host = url.value
   const client_id = _client_id.value
   const client_secret = _client_secret.value
@@ -27,8 +27,7 @@ async function connect() {
   const data = JSON.stringify({
     client_id,
     client_secret,
-    host: url.value,
-    oauth_token_url
+    host: url.value
   })
 
   let err, response
@@ -42,7 +41,7 @@ async function connect() {
   if (authentication) {
     $('#main').removeAttr("style");
     $('#connect-modal').modal("close");
-    $('.tabs').tabs('select', 'createuser');
+    $('.tabs').tabs('select', 'users');
   }
   else {
 
@@ -56,6 +55,44 @@ function getError(err)
   }
 
   return err
+}
+
+async function load_users() {
+  const data = JSON.stringify({
+    host: url.value,
+    authentication
+  })
+
+  let err, response
+
+  [err, response] = await post("get-users", data)
+
+  if(response)
+  {
+      const users = response.users
+      if (users) {
+        var table = "";
+
+        for(i=0;i<users.length;i++)
+        {
+          const user = users[i];
+
+          table += "<tr><td>" + user.username + "</td><td>" + user.firstname + "</td><td>" + user.lastname + "</td><td>" + user.email + "</td>"
+        }
+
+        $("#users_grid").html(table)
+
+        message = "Users loaded"
+
+      } else {
+        message = "No users loaded"
+      }
+    }
+    else {
+      message = "Error"
+    }
+
+    $("#messages").show().text(message)
 }
 
 async function getEmployee() {

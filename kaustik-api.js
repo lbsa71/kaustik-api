@@ -26,10 +26,13 @@ axios.interceptors.request.use(request => {
   return request
 })
 
+
 module.exports = function() {
+  const oauth_token_url = 'https://auth.kaustik.com/oauth/token'
+
   const url = (host, endpoint) => host + endpoint
 
-  const connect = function(host, oauth_token_url, client_id, client_secret) {
+  const connect = function(host, client_id, client_secret) {
     var data = querystring.stringify({
       client_id,
       client_secret,
@@ -186,12 +189,37 @@ module.exports = function() {
     })
   }
 
+  function get_users(host, authentication) {
+    return new Promise((resolve, reject) => {
+
+      const usersUrl = url(host, '/api/users')
+
+      console.log(usersUrl)
+      console.log(authentication)
+    // http://aiai.local.kaustik.tech/api/employees/{id}
+
+      var config = getConfig(authentication)
+
+      axios.get(usersUrl, config)
+        .then(response => {
+          resolve(response.data);
+        })
+        .catch(error => {
+
+          const errors = error.response.data.errors
+
+          reject(errors)
+        });
+    })
+  }
+
   return {
     login,
     connect,
     create_user,
     make_employee,
     create_decisions,
+    get_users,
     get_employee
   }
 }
