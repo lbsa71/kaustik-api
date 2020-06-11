@@ -1,4 +1,4 @@
-var session
+var authentication
 var tabs
 
 function to(promise) {
@@ -19,21 +19,27 @@ function post(url, data) {
 }
 
 async function connect() {
+  const oauth_token_url = _oauth_token_url.value
+  const host = url.value
+  const client_id = _client_id.value
+  const client_secret = _client_secret.value
+
   const data = JSON.stringify({
+    client_id,
+    client_secret,
     host: url.value,
-    username: login.value,
-    password: pwd.value
+    oauth_token_url
   })
 
   let err, response
 
   [err, response] = await post("connect", data)
 
-  session = err ? null : response.session
+  authentication = err ? null : response.authentication
 
-  $(".tab").toggleClass("disabled", !session)
+  $(".tab").toggleClass("disabled", !authentication)
 
-  if (session) {
+  if (authentication) {
     $('#main').removeAttr("style");
     $('#connect-modal').modal("close");
     $('.tabs').tabs('select', 'createuser');
@@ -55,7 +61,7 @@ function getError(err)
 async function getEmployee() {
   const data = JSON.stringify({
     host: url.value,
-    session: session,
+    authentication,
     user_id: user_id.value
   })
 
@@ -115,7 +121,7 @@ async function uploadDecision() {
 
         const data = JSON.stringify({
           host: url.value,
-          session: session,
+          authentication,
           decision
         })
 
@@ -153,7 +159,7 @@ async function uploadDecision() {
 async function makeUserEmployee() {
   const data = JSON.stringify({
     host: url.value,
-    session: session,
+    authentication,
     user_id: role_user_id.value
   })
 
@@ -179,7 +185,7 @@ async function makeUserEmployee() {
 async function createUser() {
   const data = JSON.stringify({
     host: url.value,
-    session: session,
+    authentication,
     username: username.value,
     email: email.value,
     firstname: firstname.value,

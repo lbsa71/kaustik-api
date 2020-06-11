@@ -25,18 +25,24 @@
         <div id="connect" class="col s12">
           <div class="row">
             <div class="input-field s12">
-              <input id="url" type="url" class="validate">
+              <input id="url" type="url" class="validate" value="https://test.aiai.se">
               <label for="url">Kaustik API host URL</label>
             </div>
           </div>
           <div class="row">
+            <div class="input-field col s12">
+              <input id="_oauth_token_url" type="text" class="validate" value="">
+              <label for="_oauth_token_url">OAuth Token URL</label>
+            </div>
+          </div>
+          <div class="row">
             <div class="input-field col s6">
-              <input id="login" type="text" class="validate">
-              <label for="login">API user login</label>
+              <input id="_client_id" type="text" class="validate" value="">
+              <label for="_client_id">API Client Id</label>
             </div>
             <div class="input-field col s6">
-              <input id="pwd" type="text" class="validate">
-              <label for="pwd">API user password</label>
+              <input id="_client_secret" type="text" class="validate" value="">
+              <label for="_client_secret">API Client Secret</label>
             </div>
           </div>
         </div>
@@ -97,7 +103,7 @@
         <div id="getuser" class="col s12">
           <div class="row">
             <div class="input-field s12">
-              <input id="user_id" type="number" class="validate">
+              <input id="user_id" type="number" class="validate" value="38">
               <label for="user_id" class="active">User Id</label>
             </div>
           </div>

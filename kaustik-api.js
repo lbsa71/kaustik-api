@@ -1,5 +1,19 @@
 const axios = require('axios');
-require('axios-debug-log')
+require('axios-debug-log')({
+  request: function (debug, config) {
+    debug('Request with ' + config.headers['content-type'])
+  },
+  response: function (debug, response) {
+    debug(
+      'Response with ' + response.headers['content-type'],
+      'from ' + response.config.url
+    )
+  },
+  error: function (debug, error) {
+    // Read https://www.npmjs.com/package/axios#handling-errors for more info
+    debug('Boom', error)
+  }
+})
 
 const querystring = require('querystring');
 const setCookie = require('set-cookie-parser');
@@ -15,7 +29,27 @@ axios.interceptors.request.use(request => {
 module.exports = function() {
   const url = (host, endpoint) => host + endpoint
 
-  var session = null;
+  const connect = function(host, oauth_token_url, client_id, client_secret) {
+    var data = querystring.stringify({
+      client_id,
+      client_secret,
+      audience: host,
+      grant_type: "client_credentials"
+    })
+
+    return new Promise((resolve, reject) => {
+      axios.post(oauth_token_url, data)
+        .then(response => {
+          const access_token=response.data.access_token
+          const authentication = { bearer: access_token }
+          resolve(authentication)
+        })
+        .catch(error => {
+          console.log("error: %o", error);
+          reject(error)
+        })
+    })
+  }
 
   const login = function(host, username, password) {
     var data = querystring.stringify({
@@ -35,9 +69,9 @@ module.exports = function() {
         .then(response => {
           var cookies = setCookie.parse(response);
 
-          session = cookies[0].value
+          const authentication = { session: cookies[0].value }
 
-          resolve(session)
+          resolve(authentication)
         })
         .catch(error => {
           reject(error)
@@ -45,16 +79,21 @@ module.exports = function() {
     })
   }
 
-  function getConfig(session) {
+  function getConfig(authentication) {
+
+    console.log("config authentication: %o", authentication)
+
     return {
-      headers: {
-        "Cookie": "PHPSESSID=" + session
+      headers: authentication.bearer ? {
+        "Authorization": "Bearer " + authentication.bearer
+      } : {
+        "Cookie": "PHPSESSID=" + authentication.session
       },
       validateStatus: status => status >= 200 && status < 500
     }
   }
 
-  function create_user(host, session, username, firstname, lastname, email) {
+  function create_user(host, authentication, username, firstname, lastname, email) {
     var data = {
       username,
       firstname,
@@ -62,7 +101,7 @@ module.exports = function() {
       email
     }
 
-    var config = getConfig(session)
+    var config = getConfig(authentication)
 
     return new Promise((resolve, reject) => {
       // http://aiai.local.kaustik.tech/api/user-accounts
@@ -80,10 +119,10 @@ module.exports = function() {
     })
   }
 
-  function create_decisions(host, session, decisions) {
+  function create_decisions(host, authentication, decisions) {
     var data = decisions
 
-    var config = getConfig(session)
+    var config = getConfig(authentication)
 
     return new Promise((resolve, reject) => {
       // http://aiai.local.kaustik.tech/api/user-accounts
@@ -101,14 +140,14 @@ module.exports = function() {
     })
   }
 
-  function make_employee(host, session, id) {
+  function make_employee(host, authentication, id) {
     var data = {
       "id": Number(id)
     }
 
     console.log("make_employee: %o", data)
 
-    var config = getConfig(session)
+    var config = getConfig(authentication)
 
     return new Promise((resolve, reject) => {
       // http://aiai.local.kaustik.tech/api/user-accounts
@@ -123,16 +162,16 @@ module.exports = function() {
     })
   }
 
-  function get_employee(host, session, id) {
+  function get_employee(host, authentication, id) {
     return new Promise((resolve, reject) => {
 
       const employeeUrl = url(host, '/api/employees/' + id)
 
       console.log(employeeUrl)
-      console.log(session)
+      console.log(authentication)
     // http://aiai.local.kaustik.tech/api/employees/{id}
 
-    var config = getConfig(session)
+      var config = getConfig(authentication)
 
       axios.get(employeeUrl, config)
         .then(response => {
@@ -149,6 +188,7 @@ module.exports = function() {
 
   return {
     login,
+    connect,
     create_user,
     make_employee,
     create_decisions,
