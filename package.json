@@ -10,7 +10,7 @@
     "axios": "^0.19.2",
     "axios-debug-log": "^0.6.2",
     "body-parser": "^1.18.3",
-    "express": "^4.16.3",
+    "express": "^4.17.3",
     "materialize-css": "^1.0.0",
     "set-cookie-parser": "^2.4.6"
   },
